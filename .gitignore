@@ -144,3 +144,13 @@ dist
 *.sfk
 *.sfap0
 utilities/config.bat
+
+# Redrawn (Bun backend)
+node_modules/
+data/saved/
+data/cache/
+
+# Spike scratch: duplicate Ruffle builds and run logs
+spike/ruffle/
+spike/ruffle-nightly/
+*.log

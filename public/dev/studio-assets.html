@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assets panel harness</title>
+<!-- DEV ONLY. Standalone harness for public/js/studio/assets-panel.js.
+     Real store.js + a mocked themes API (data from public/dev/studio-assets-mock.json) and a mocked stage.
+     Query: ?theme=dark|light  ?stress (adds a 6000 item theme)  ?real (use real themes.js/thumbs.js)  ?w=300 (panel width)  ?slow (slow network) -->
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/studio-assets.css">
+<script src="/js/theme-boot.js"></script>
+<style>
+  body { display: block; height: 100dvh; overflow: hidden; }
+  .app { display: grid; grid-template-columns: var(--pw, 300px) minmax(0, 1fr) 280px; height: 100dvh; }
+  .left { border-right: 1px solid var(--line); min-height: 0; display: flex; flex-direction: column; background: var(--surface); }
+  .center { display: grid; place-items: center; background: var(--stage); padding: 16px; min-width: 0; position: relative; }
+  .st-stage { width: 100%; height: 100%; display: grid; place-items: center; position: relative; }
+  .surface { position: relative; width: min(100%, 550px * 1.4); aspect-ratio: 550 / 310; background: oklch(0.25 0.02 262); overflow: hidden; border-radius: 4px; color: #fff; font: 12px/1.2 var(--font); }
+  .surface .bg { position: absolute; inset: 0; display: grid; place-items: end start; padding: 8px; background: repeating-linear-gradient(45deg, oklch(0.3 0.03 262), oklch(0.3 0.03 262) 12px, oklch(0.27 0.03 262) 12px, oklch(0.27 0.03 262) 24px); color: oklch(0.8 0.02 258); }
+  .surface .el { position: absolute; translate: -50% -100%; padding: 4px 8px; border-radius: 6px; background: oklch(0.6 0.15 var(--h)); font-weight: 500; white-space: nowrap; max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
+  .surface .el.prop { translate: -50% -50%; background: oklch(0.55 0.1 var(--h)); }
+  .surface .el.effect { translate: -50% -50%; background: transparent; border: 1px dashed oklch(0.8 0.1 var(--h)); }
+  .surface .bub { position: absolute; translate: -50% -50%; padding: 6px 10px; background: #fff; color: #111; border-radius: 12px; }
+  .side { border-left: 1px solid var(--line); overflow: auto; background: var(--surface); padding: 12px; display: grid; align-content: start; gap: 10px; font-size: 12px; }
+  .side h3 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+  .side pre { margin: 0; white-space: pre-wrap; word-break: break-all; color: var(--ink-2); max-height: 38vh; overflow: auto; font: 11px/1.4 ui-monospace, monospace; }
+  .side .row { display: flex; gap: 6px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="left" id="left"></aside>
+  <main class="center"><div class="st-stage" id="stage"><div class="surface" id="surface"></div></div></main>
+  <aside class="side">
+    <h3>Harness</h3>
+    <div class="row">
+      <button class="btn btn-sm" id="w260">260px</button><button class="btn btn-sm" id="w300">300px</button><button class="btn btn-sm" id="w420">420px</button>
+      <button class="btn btn-sm" id="undo">Undo</button><button class="btn btn-sm" id="remount">Remount</button>
+    </div>
+    <h3>Selection</h3><pre id="sel"></pre>
+    <h3>Command log</h3><pre id="log"></pre>
+  </aside>
+</div>
+<script type="module">
+import { createStore } from '/js/studio/store.js';
+import { mountAssetsPanel } from '/js/studio/assets-panel.js';
+import { createMovie } from '/js/studio/model.js';
+
+const q = new URLSearchParams(location.search);
+if (q.get('theme')) document.documentElement.dataset.theme = q.get('theme');
+if (q.get('w')) document.getElementById('app').style.setProperty('--pw', `${+q.get('w')}px`);
+const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+const slow = q.has('slow') ? 5 : 1;
+
+const hue = (s) => { let x = 7; for (let i = 0; i < s.length; i++) x = (x * 31 + s.charCodeAt(i)) % 3600; return x / 10; };
+const svg = (b) => 'data:image/svg+xml;utf8,' + encodeURIComponent(b);
+
+// ---- mock themes API
+let themes, getThumb;
+if (q.has('real')) {
+  themes = await import('/js/studio/themes.js');
+  try { getThumb = (await import('/js/studio/thumbs.js')).getAssetThumb; } catch { /* panel falls back */ }
+} else {
+  const data = await (await fetch('/dev/studio-assets-mock.json')).json();
+  if (q.has('stress')) {
+    const t = { id: 'stress', name: 'Stress test (6,000 per list)', backgrounds: [], characters: [], props: [], sounds: [], effects: [] };
+    const words = ['Castle', 'Forest', 'Office', 'Beach', 'Lab', 'Street', 'Moon', 'Kitchen', 'School', 'Arena', 'Cave', 'Market'];
+    for (let i = 0; i < 6000; i++) {
+      const w = words[i % words.length];
+      t.backgrounds.push({ assetId: `stress.bg_${i}.swf`, name: `${w} ${Math.floor(i / words.length)}`, tags: [w, i % 3 ? 'Outdoor' : 'Indoor'] });
+      t.props.push({ assetId: `stress.prop_${i}.swf`, name: `${w} prop ${i}`, tags: [w] });
+      t.sounds.push({ assetId: `stress.snd_${i}.mp3`, name: `${w} sound ${i}`, subtype: i % 2 ? 'bgmusic' : 'soundeffect', duration: 3000 + (i % 90) * 1000, tags: [w] });
+    }
+    data.themes.stress = t; data.list.unshift({ id: 'stress', name: t.name });
+  }
+  themes = {
+    loadThemeList: async () => { await delay(250 * slow); return data.list; },
+    loadTheme: async (id) => { await delay((200 + Math.random() * 300) * slow); if (!data.themes[id]) throw new Error('no such theme'); return data.themes[id]; },
+    assetUrl: (assetId) => (/\.mp3$/.test(assetId) ? 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAA=' : ''),
+  };
+  getThumb = async (assetId, kind) => {
+    await delay((60 + Math.random() * 380) * slow);
+    const hh = hue(assetId);
+    const bgc = `hsl(${hh} 45% 72%)`, fg = `hsl(${(hh + 30) % 360} 50% 38%)`;
+    const label = assetId.split('.').slice(1, 3).join('.').replace(/\.swf$/, '').slice(0, 14);
+    if (kind === 'bg') return svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 90"><rect width="160" height="90" fill="${bgc}"/><circle cx="${30 + hh % 100}" cy="30" r="14" fill="hsl(${(hh + 60) % 360} 70% 80%)"/><path d="M0 70 L40 45 L80 66 L120 40 L160 62 V90 H0Z" fill="${fg}"/><text x="6" y="84" font-size="9" fill="#fff" font-family="sans-serif">${label}</text></svg>`);
+    if (kind === 'char') return svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="30" r="17" fill="${fg}"/><rect x="28" y="52" width="44" height="40" rx="14" fill="${bgc === fg ? '#888' : `hsl(${hh} 55% 48%)`}"/></svg>`);
+    return svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="22" y="26" width="56" height="48" rx="8" fill="${fg}"/><rect x="30" y="34" width="40" height="14" rx="4" fill="${bgc}"/></svg>`);
+  };
+}
+
+// ---- mock stage: draws the current scene with labelled boxes and exposes the bits the panel uses
+const store = createStore(createMovie({ themeId: q.get('movieTheme') || 'common' }));
+const surface = document.getElementById('surface');
+const stage = {
+  el: document.getElementById('stage'),
+  hitTest(x, y) {
+    const sc = store.get().movie.scenes[0];
+    for (const e of [...sc.chars].reverse()) if (Math.abs(e.x - x) < 45 && y < e.y + 6 && y > e.y - 80) return { elemId: e.id, kind: 'char' };
+    return null;
+  },
+};
+function paint() {
+  const st = store.get();
+  const sc = st.movie.scenes.find((s) => s.id === st.selection.sceneId) || st.movie.scenes[0];
+  const pct = (v, t) => `${(v / t) * 100}%`;
+  const parts = [`<div class="bg">${sc.bg ? sc.bg.assetId : 'No background. Click or drag one here.'}</div>`];
+  const draw = (e, cls) => `<div class="el ${cls}" style="--h:${hue(e.assetId)};left:${pct(e.x, 550)};top:${pct(e.y, 310)}">${e.assetId.split('.').slice(1).join('.')}${e.action ? ` [${e.action.split('.').slice(-2, -1)}]` : ''}${e.emotion ? ` {${e.emotion.split('.').slice(-2, -1)}}` : ''}</div>`;
+  sc.props.forEach((e) => parts.push(draw(e, 'prop')));
+  sc.effects.forEach((e) => parts.push(draw(e, 'effect')));
+  sc.chars.forEach((e) => parts.push(draw(e, 'char')));
+  sc.bubbles.forEach((b) => parts.push(`<div class="bub" style="left:${pct(b.x, 550)};top:${pct(b.y, 310)}">${b.text} <small>(${b.style}${b.targetId ? '→char' : ''})</small></div>`));
+  surface.innerHTML = parts.join('');
+  document.getElementById('sel').textContent = JSON.stringify({ selection: st.selection, sounds: st.movie.sounds.map((s) => `${s.kind}:${s.assetId}@${s.start}`) }, null, 1);
+}
+const logEl = document.getElementById('log');
+const lines = [];
+store.subscribe((state, cmd) => {
+  paint();
+  if (cmd && !['select', 'setPlayhead'].includes(cmd.type)) {
+    lines.unshift(`${cmd.type} ${JSON.stringify({ ...cmd, type: undefined, sound: undefined, bubble: undefined, sceneId: undefined })}`);
+    logEl.textContent = lines.slice(0, 12).join('\n');
+  }
+});
+paint();
+
+// ---- mount
+let panel;
+const mount = () => { panel?.destroy(); panel = mountAssetsPanel(document.getElementById('left'), { store, themes, stage, getThumb }); window.__panel = panel; };
+mount();
+window.__store = store;
+for (const w of [260, 300, 420]) document.getElementById(`w${w}`).onclick = () => document.getElementById('app').style.setProperty('--pw', `${w}px`);
+document.getElementById('undo').onclick = () => store.undo();
+document.getElementById('remount').onclick = mount;
+</script>
+</body>
+</html>

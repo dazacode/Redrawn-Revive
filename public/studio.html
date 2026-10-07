@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Studio · Redrawn</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="/img/logo.png">
+  <script src="/js/theme-boot.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/studio.css">
+  <link rel="stylesheet" href="/css/studio-assets.css">
+  <link rel="stylesheet" href="/css/studio-timeline.css">
+</head>
+<body class="studio">
+  <div class="st-app" id="app" data-ready="false">
+    <header class="st-toolbar" id="toolbar" aria-label="Studio toolbar"></header>
+    <aside class="st-panel st-left" id="assets" aria-label="Assets"></aside>
+    <main class="st-center" id="center">
+      <div class="st-stage" id="stage" aria-label="Stage"></div>
+    </main>
+    <aside class="st-panel st-right" id="inspector" aria-label="Inspector"></aside>
+    <section class="st-panel st-bottom" id="timeline" aria-label="Timeline"></section>
+    <div class="st-resizer" data-resize="left" role="separator" aria-orientation="vertical" aria-label="Resize assets panel" tabindex="0"></div>
+    <div class="st-resizer" data-resize="right" role="separator" aria-orientation="vertical" aria-label="Resize inspector" tabindex="0"></div>
+    <div class="st-resizer" data-resize="bottom" role="separator" aria-orientation="horizontal" aria-label="Resize timeline" tabindex="0"></div>
+  </div>
+  <div class="st-boot" id="boot" role="status">
+    <div class="spinner" aria-hidden="true"></div>
+    <p id="boot-msg">Loading Studio</p>
+  </div>
+  <div class="toasts" role="status" aria-live="polite" id="toasts"></div>
+  <script type="module" src="/js/studio/studio.js"></script>
+</body>
+</html>

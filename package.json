@@ -1,0 +1,22 @@
+{
+  "name": "redrawn",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Redrawn - Bun backend emulating the GoAnimate LVM API for the legacy Flash SWFs",
+  "scripts": {
+    "dev": "bun --hot src/index.ts",
+    "start": "bun src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "tts:check": "bun src/tts/check.ts"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.11.2",
+    "fflate": "^0.8.3"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.2",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "ruffle-spike",
+  "private": true,
+  "dependencies": {
+    "playwright-core": "^1.63.0"
+  }
+}

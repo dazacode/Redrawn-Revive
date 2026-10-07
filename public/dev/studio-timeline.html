@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio timeline harness</title>
+<script src="/js/theme-boot.js"></script>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/studio-timeline.css">
+<style>
+  body { padding: 16px; gap: 12px; height: 100dvh; }
+  .h-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .h-top h1 { font-size: 1rem; margin-right: auto; }
+  .h-stage { flex: 1; min-height: 80px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--stage); color: oklch(0.8 0.02 258); display: grid; place-items: center; font-size: var(--fs-sm); }
+  .h-panel { height: var(--h, 300px); border: 1px solid var(--line-strong); border-radius: var(--r-md); overflow: hidden; background: var(--surface); }
+  .h-log { font: 12px/1.4 ui-monospace, monospace; color: var(--ink-3); max-height: 56px; overflow: auto; }
+</style>
+</head>
+<body>
+  <div class="h-top">
+    <h1>Studio timeline harness (mock data)</h1>
+    <button class="btn btn-sm" data-h="theme">Toggle theme</button>
+    <button class="btn btn-sm" data-h="undo">Undo</button>
+    <button class="btn btn-sm" data-h="redo">Redo</button>
+    <button class="btn btn-sm" data-h="empty">Empty movie</button>
+    <button class="btn btn-sm" data-h="demo">Demo movie</button>
+  </div>
+  <div class="h-stage" id="stage">stage placeholder: <span id="stage-info" style="margin-left:8px"></span></div>
+  <div class="h-panel" id="timeline"></div>
+  <div class="h-log" id="log"></div>
+  <script type="module" src="/dev/studio-timeline.mock.js"></script>
+</body>
+</html>

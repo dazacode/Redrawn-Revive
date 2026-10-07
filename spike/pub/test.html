@@ -1,0 +1,47 @@
+<!doctype html><meta charset=utf-8><title>Ruffle spike</title>
+<style>body{margin:0;background:#eee;font:12px sans-serif}#c{width:960px;height:600px;margin:0 auto}#c.full{width:100vw;height:95vh}</style>
+<div id=bar></div><div id=c></div>
+<script>
+const q = new URLSearchParams(location.search);
+const swf = q.get('swf') || 'cc';
+const rv = q.get('ruffle') || 'ruffle';
+const O = location.origin;
+const SWF = O + '/animation/414827163ad4eb60', STORE = O + '/store/3a981f5cb2739137/<store>', CLIENT = O + '/static/ad44370a650793d9/<client_theme>';
+const common = { apiserver: '/', storePath: STORE, clientThemePath: CLIENT, ut: 60 };
+const presets = {
+  cc: { file: 'cc.swf', fv: { ...common, themeId: 'family', bs: 'adam', appCode: 'go', page: '', siteId: 'go', m_mode: 'school', isLogin: 'Y', isEmbed: 1, ctc: 'go', tlang: 'en_US' } },
+  cc_browser: { file: 'cc_browser.swf', fv: { ...common, themeId: 'family', appCode: 'go', page: '', siteId: 'go', m_mode: 'school', isLogin: 'Y', retut: 1, goteam_draft_only: 1, isEmbed: 1, ctc: 'go', tlang: 'en_US', lid: 13 } },
+  go_full: { file: 'go_full.swf', full: 1, fv: { ...common, isEmbed: 1, ctc: 'go', bs: 'default', appCode: 'go', page: '', siteId: 'go', lid: 13, isLogin: 'Y', retut: 1, themeId: 'business', tlang: 'en_US', presaveId: q.get('movieId') || 'm-spike', goteam_draft_only: 1, isWide: 1, nextUrl: '/pages/html/list.html' } },
+  player: { file: 'player.swf', full: 1, fv: { ...common, autostart: 1, isWide: 1 } },
+};
+const pr = presets[swf];
+for (const [k, v] of q) if (!['swf','ruffle','cfg'].includes(k)) pr.fv[k] = v;
+if (pr.full) document.getElementById('c').className = 'full';
+// page.js JS hooks
+window.interactiveTutorial = { neverDisplay: () => true };
+window.studioLoaded = a => cl('studioLoaded ' + a);
+window.initPreviewPlayer = xml => cl('initPreviewPlayer called');
+window.exitStudio = () => cl('exitStudio called');
+window.characterSaved = () => cl('characterSaved called');
+window.showImporter = () => cl('showImporter');
+window.flashvars = pr.fv;
+function cl(m) { console.log('[spike] ' + m); fetch('/clientlog', { method: 'POST', body: m }).catch(()=>{}); }
+['error','warn'].forEach(t => { const o = console[t]; console[t] = function () { try { cl(t + ': ' + [...arguments].map(String).join(' ').slice(0, 500)); } catch(e){} o.apply(console, arguments); }; });
+window.addEventListener('error', e => cl('window.onerror ' + e.message));
+window.RufflePlayer = window.RufflePlayer || {};
+window.RufflePlayer.config = Object.assign({ publicPath: '/' + rv + '/', polyfills: false, logLevel: 'info', autoplay: 'on', unmuteOverlay: 'hidden' }, JSON.parse(q.get('cfg') || '{}'));
+</script>
+<script>document.write('<script src="/' + rv + '/ruffle.js"><\/script>')</script>
+<script>
+window.addEventListener('load', async () => {
+  const r = window.RufflePlayer.newest();
+  const p = window.player = r.createPlayer();
+  p.style.width = '100%'; p.style.height = '100%';
+  document.getElementById('c').appendChild(p);
+  cl('ruffle version ' + (r.version || '?') + ' loading ' + pr.file);
+  try {
+    await p.ruffle().load({ url: SWF + '/' + pr.file, parameters: pr.fv, allowScriptAccess: true, base: SWF + '/', ...JSON.parse(q.get('cfg') || '{}') });
+    cl('load() resolved');
+  } catch (e) { cl('load() FAILED ' + e); }
+});
+</script>

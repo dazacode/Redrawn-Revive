@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings · Redrawn</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="/img/logo.png">
+  <script src="/js/theme-boot.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+  <div id="shell-header"></div>
+  <main class="page">
+    <div class="settings">
+      <div class="page-head"><div><h1>Settings</h1><p>Saved in this browser. Changes apply immediately; open editors need a reload.</p></div></div>
+
+      <form id="settings">
+        <h2 class="section-head" style="margin-top:0">Appearance</h2>
+        <div class="setting-list">
+          <div class="setting col-sm">
+            <div class="setting-text"><span class="setting-name" id="l-theme">Theme</span><p>System follows your device's light or dark setting.</p></div>
+            <div class="segmented" role="radiogroup" aria-labelledby="l-theme">
+              <label><input type="radio" name="theme" value="system"><span>System</span></label>
+              <label><input type="radio" name="theme" value="light"><span>Light</span></label>
+              <label><input type="radio" name="theme" value="dark"><span>Dark</span></label>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section-head">Editors</h2>
+        <div class="setting-list">
+          <div class="setting">
+            <div class="setting-text"><label for="s-short">Short theme list</label><p>Show only the main character themes when creating or browsing characters.</p></div>
+            <span class="switch"><input id="s-short" type="checkbox" name="shortThemeList" role="switch"><span class="track"></span></span>
+          </div>
+          <div class="setting">
+            <div class="setting-text"><label for="s-auto">Autosave new videos</label><p>When off, a new video is only saved when you save it yourself.</p></div>
+            <span class="switch"><input id="s-auto" type="checkbox" name="autosave" role="switch"><span class="track"></span></span>
+          </div>
+          <div class="setting col-sm">
+            <div class="setting-text"><label for="s-quality">Render quality</label><p>Lower it if the editor feels slow on this device.</p></div>
+            <select class="select" id="s-quality" name="quality">
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+        </div>
+      </form>
+
+      <div class="settings-foot">
+        <button class="btn btn-sm" type="button" id="reset">Reset to defaults</button>
+        <a href="/faq.html">FAQ</a>
+        <a href="https://discord.gg/Kf7BzSw" rel="noopener">Discord</a>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="/js/pages/settings.js"></script>
+</body>
+</html>

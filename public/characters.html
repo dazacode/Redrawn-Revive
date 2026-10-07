@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Characters · Redrawn</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="/img/logo.png">
+  <script src="/js/theme-boot.js"></script>
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+  <div id="shell-header"></div>
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <h1>Characters</h1>
+        <p>Pick a theme to build someone new, or browse what already exists.</p>
+      </div>
+    </div>
+
+    <section class="section" aria-labelledby="h-create">
+      <div class="section-head"><h2 id="h-create">Create by theme</h2></div>
+      <ul class="theme-list" id="themes"></ul>
+    </section>
+
+    <section class="section" id="mine" aria-labelledby="h-mine" hidden>
+      <div class="section-head"><h2 id="h-mine">Your characters</h2></div>
+      <ul class="char-grid" id="mine-grid"></ul>
+    </section>
+  </main>
+  <script type="module" src="/js/pages/characters.js"></script>
+</body>
+</html>

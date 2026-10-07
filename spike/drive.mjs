@@ -1,0 +1,14 @@
+import { chromium } from "playwright-core";
+const [,, swf, ruffle='ruffle', wait='25000', out, cfg] = process.argv;
+const b = await chromium.launch({ channel: 'chrome', headless: true, args: ['--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader'] });
+const pg = await b.newPage({ viewport: { width: 1280, height: 800 } });
+const lines = [];
+pg.on('console', m => lines.push(`[${m.type()}] ${m.text()}`.slice(0,600)));
+pg.on('pageerror', e => lines.push('[pageerror] ' + e.message));
+pg.on('requestfailed', r => lines.push('[reqfailed] ' + r.url()));
+let url = `http://localhost:4680/test?swf=${swf}&ruffle=${ruffle}` + (cfg ? '&cfg=' + encodeURIComponent(cfg) : '');
+await pg.goto(url);
+await pg.waitForTimeout(+wait);
+await pg.screenshot({ path: out || `shot-${swf}-${ruffle}.png` });
+console.log(lines.join('\n'));
+await b.close();

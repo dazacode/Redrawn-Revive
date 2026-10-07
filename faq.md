@@ -8,9 +8,6 @@ This file contains tons of useful information based on questions I get a lot abo
 Wrapper: Offline (simply called "Offline" for the rest of this page) is a continuation of the original Wrapper project, which was taken down approximately on 2020-04-17. Unlike the original, Offline can not be taken down. Everything it needs to run is stored entirely on your computer. While its current use is for making content, the motive is to make a historical archive for the original Flash-based themes used with this editor.
 
 ### Where can I get updates?
-#### Discord
-You can join the Discord server here to get updates as they come out: <https://discord.gg/b7YSRkg>
-If you don't want to use Discord, you could ask a friend who does to let you know when an update comes out, and they can send you the download link. Please do not email me asking for the latest version.
 #### GitHub
 Wrapper: Offline also has a GitHub repository! Get updates faster through here: <https://github.com/Wrapper-Offline/Wrapper-Offline-Public>
 
@@ -77,10 +74,10 @@ The current size is ~1.5 GB. The base download can't be much smaller without bei
 ## Wrapper isn't working!
 
 ### The launcher is crashing!
-There's likely not much way to solve this on your own. You should turn on VERBOSEWRAPPER in settings.bat, open a command prompt window, drag start_wrapper.bat onto it, and run it. Then, when it crashes, take a screenshot and post it in our Discord server. If you're tech savvy enough to understand whatever error pops up, feel free to elaborate.
+There's likely not much way to solve this on your own. You should turn on VERBOSEWRAPPER in settings.bat, open a command prompt window, drag start_wrapper.bat onto it, and run it. Then, when it crashes, take a screenshot and open an issue on GitHub with it. If you're tech savvy enough to understand whatever error pops up, feel free to elaborate.
 
 ### The editor/character creator won't load!
-The cause of this is usually an error with http-server, the software Offline uses to host the asset files. To see its output, turn on VERBOSEWRAPPER in settings.bat. If there's an error, then you might just have to ask for support in the Discord. If there's no error however, you might simply have to make your browser trust the HTTPS certificate. Normally this is automatically fixed by the launcher, but it may have broken, and Firefox users simply have to deal with this sadly. Because, as a Firefox user, Firefox has to be **special**. This is not a concern beyond annoyance, as you're just connecting to yourself and nobody else can connect. But if you see a notice like this on a real website, *that* is a cause for concern and you should avoid the website. To fix this, you can visit <https://localhost:4343> or open the server page with the launcher, and add a security exception.
+The cause of this is usually an error with http-server, the software Offline uses to host the asset files. To see its output, turn on VERBOSEWRAPPER in settings.bat. If there's an error, then you might just have to open an issue on GitHub. If there's no error however, you might simply have to make your browser trust the HTTPS certificate. Normally this is automatically fixed by the launcher, but it may have broken, and Firefox users simply have to deal with this sadly. Because, as a Firefox user, Firefox has to be **special**. This is not a concern beyond annoyance, as you're just connecting to yourself and nobody else can connect. But if you see a notice like this on a real website, *that* is a cause for concern and you should avoid the website. To fix this, you can visit <https://localhost:4343> or open the server page with the launcher, and add a security exception.
 
 
 

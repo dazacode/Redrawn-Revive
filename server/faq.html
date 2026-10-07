@@ -30,9 +30,6 @@
 <p>Redrawn is a fork of Wrapper: Offline, which aims to be better, have less bugs, add in more features, and many more!</p>
 
 <h3 id="where-can-i-get-updates">Where can I get updates?</h3>
-<p>You can join the Discord server here to get updates as they come out: <a href="https://discord.gg/ZpaQ9qrUNx">In our server</a>
-If you don’t want to use Discord, you could ask a friend who does to let you know when an update comes out, and they can send you the download link. Please do not email me asking for the latest version.</p>
-
 <h3 id="will-it-work-forever-even-after-flash-is-retired">Will it work forever? Even after Flash is retired?</h3>
 <p>It should, that’s the goal. Perhaps in the future when we all run 6000-bit machines implanted into our brains it won’t be compatible with that anymore, but I’m sure there’ll always be a way to run it. There is also futureproofing for Flash’s discontinuation, since Offline includes a Flash install and a version of ungoogled-chromium that supports Flash. By default, it starts from this, but you can change that in settings.bat. The included Chrome should not be used for browsing beyond using Flash content. You can also look into projects like <a href="http://lightspark.github.io/">Lightspark</a> and <a href="https://ruffle.rs/">ruffle</a> that are attempting to recreate Flash.</p>
 
@@ -104,10 +101,10 @@ On your first run:</p>
 <h2 id="wrapper-isnt-working">Wrapper isn’t working!</h2>
 
 <h3 id="the-launcher-is-crashing">The launcher is crashing!</h3>
-<p>There’s likely not much way to solve this on your own. You should turn on VERBOSEWRAPPER in settings.bat, open a command prompt window, drag start_wrapper.bat onto it, and run it. Then, when it crashes, take a screenshot and post it in our Discord server. If you’re tech savvy enough to understand whatever error pops up, feel free to elaborate.</p>
+<p>There’s likely not much way to solve this on your own. You should turn on VERBOSEWRAPPER in settings.bat, open a command prompt window, drag start_wrapper.bat onto it, and run it. Then, when it crashes, take a screenshot and open an issue on GitHub with it. If you’re tech savvy enough to understand whatever error pops up, feel free to elaborate.</p>
 
 <h3 id="the-editorcharacter-creator-wont-load">The editor/character creator won’t load!</h3>
-<p>The cause of this is usually an error with http-server, the software Offline uses to host the asset files. To see its output, turn on VERBOSEWRAPPER in settings.bat. If there’s an error, then you might just have to ask for support in the Discord. If there’s no error however, you might simply have to make your browser trust the HTTPS certificate. Normally this is automatically fixed by the launcher, but it may have broken, and Firefox users simply have to deal with this sadly. Because, as a Firefox user, Firefox has to be <strong>special</strong>. This is not a concern beyond annoyance, as you’re just connecting to yourself and nobody else can connect. But if you see a notice like this on a real website, <em>that</em> is a cause for concern and you should avoid the website. To fix this, you can visit <a href="https://localhost:4343">https://localhost:4343</a> or open the server page with the launcher, and add a security exception.</p>
+<p>The cause of this is usually an error with http-server, the software Offline uses to host the asset files. To see its output, turn on VERBOSEWRAPPER in settings.bat. If there’s an error, then you might just have to open an issue on GitHub. If there’s no error however, you might simply have to make your browser trust the HTTPS certificate. Normally this is automatically fixed by the launcher, but it may have broken, and Firefox users simply have to deal with this sadly. Because, as a Firefox user, Firefox has to be <strong>special</strong>. This is not a concern beyond annoyance, as you’re just connecting to yourself and nobody else can connect. But if you see a notice like this on a real website, <em>that</em> is a cause for concern and you should avoid the website. To fix this, you can visit <a href="https://localhost:4343">https://localhost:4343</a> or open the server page with the launcher, and add a security exception.</p>
 
 <h2 id="a-feature-isnt-hereworking">A feature isn’t here/working!</h2>
 

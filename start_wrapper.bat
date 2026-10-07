@@ -559,7 +559,7 @@ if !HTTPSERVER_DETECTED!==n (
 		echo http-server is missing, but somehow Node.js has not been installed yet.
 		echo Seems either the install failed, or Redrawn managed to skip it.
 		echo If installing directly from nodejs.org does not work, something is horribly wrong.
-		echo Please ask for help in the #support channel on Discord, or email me.
+		echo Please open an issue on GitHub for help.
 		pause
 		exit
 	)
@@ -863,7 +863,7 @@ popd
 goto wrapperidle
 
 :start_importer
-echo This doesn't work, please try to use the importer in the Legacy Video Maker, if it does not work, join our discord server and report whatever is wrong.
+echo This doesn't work, please try to use the importer in the Legacy Video Maker, if it does not work, open an issue on GitHub and report whatever is wrong.
 goto wrapperstartedcls
 
 :youfuckoff

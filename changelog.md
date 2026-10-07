@@ -49,7 +49,7 @@ This update basically has file uploading. New TTS voices have been added, includ
   - Mega Comedy World 2 by Blukas/GoTube
   - Functioning waveforms (credit to creepyjokes2000)
   - Headgear sections (credit to JoshAnimate)
-  - Frequently Asked Questions file/page (#answers from the discord server)
+  - Frequently Asked Questions file/page 
   - Disclaimer when launching for the first time
   - Folder in utilities that stores files to remember certain events
   - Added script for resetting your install (meant for developers)

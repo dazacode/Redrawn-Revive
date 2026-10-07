@@ -1,4 +1,4 @@
-<img src="https://cdn.discordapp.com/attachments/959986358473084988/960017463607701525/Sin_titulo-1.png" width="546" alt="Redrawn" /></a>
+<img src="server/logo.png" width="546" alt="Redrawn" /></a>
 # Redrawn (Beta)
 Redrawn is a GoAnimate Server Emulator carrying on the torch of [VisualPlugin's GoAnimate Wrapper project](https://github.com/GoAnimate-Wrapper) after it's shutdown in 2020. This is based off Wrapper Offline in a goal of being better than Wrapper Offline...
 
@@ -51,7 +51,11 @@ To start Redrawn on Windows, open start_wrapper.bat. It'll automate just about e
 If you want to import videos and characters from the original Wrapper or any other clones of it, open its folder and drag the "_SAVED" folder into Redrawn's "wrapper" folder. If you have already made any videos or characters, this will not work. Please only import on a new install with no saved characters or videos, or take the "_SAVED" folder in Redrawn out before dragging the old one in. If you want to import character IDs from the original LVM, you can paste `&original_asset_id=[ID HERE]` at the end of the link for the matching character creator.
 
 ## Updates & Support
-For support, the first thing you should do is read through faq.md, it most likely has what you want to know. If you can't find what you need, you can join the [Discord server](https://discord.gg/Kf7BzSw). Joining the server is recommended, as there is a whole community to help you out. If you don't use Discord, you can email mailbenson@protonmail.com to get in contact with me directly, but don't expect nearly as quick of a response.
+For help, read through [faq.md](faq.md), it most likely has what you want to know. If it does not, open an issue on GitHub.
+
+## Built with Claude
+
+Much of the Bun backend (`src/`), the new web frontend and Studio editor (`public/`), the tests, and the documentation in this repository were written with the help of Anthropic's Claude models, using [Claude Code](https://claude.com/claude-code). The work was directed and reviewed by the project owner, but the code was largely AI-generated, so expect the kinds of bugs and rough edges that come with that. Bug reports and pull requests are welcome.
 
 ## Dependencies
 This program relies on Flash, Node.js and http-server to work properly. SilentCMD is also used to suppress all the extra logging noise you'd only need for troubleshooting and development. These all have been included with the project (utilities folder) to ensure full offline operation and will be installed if missing. The "wrapper" folder and http-server have their own dependencies, but they are included as well.
@@ -75,8 +79,6 @@ Flash Player (utilities folder) and GoAnimate's original assets (server folder) 
 While completely unnecessary, if you decide to use your freedom to change the software, it would be greatly appreciated if you sent it to me so I can implement it into the main program! With credit down here of course :)
 
 ## Credits
-**Please do not contact anyone on the list for support, use the Discord server.**
-
 Redrawn:
 |Name          | Contribution         |
 | ------------ | -------------------- |
